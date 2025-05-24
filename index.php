@@ -6,7 +6,7 @@ require_once 'config.php';
 <head>
     <title>Student Registration</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
     <div class="container">
