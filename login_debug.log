@@ -1,0 +1,192 @@
+[2025-04-09 15:50:00] Login attempt with ID: 9
+[2025-04-09 15:50:00] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:50:00] Database connection test: Successful
+[2025-04-09 15:50:00] Admins table exists: Yes
+[2025-04-09 15:50:00] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:50:00] Using 'admin_id' column for lookup
+[2025-04-09 15:50:00] No admin found with ID: 9
+[2025-04-09 15:50:00] Authentication failed - redirecting back to login
+[2025-04-09 15:50:17] Login attempt with ID: 10
+[2025-04-09 15:50:17] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:50:17] Database connection test: Successful
+[2025-04-09 15:50:17] Admins table exists: Yes
+[2025-04-09 15:50:17] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:50:17] Using 'admin_id' column for lookup
+[2025-04-09 15:50:17] No admin found with ID: 10
+[2025-04-09 15:50:17] Authentication failed - redirecting back to login
+[2025-04-09 15:50:20] Login attempt with ID: 9
+[2025-04-09 15:50:20] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:50:20] Database connection test: Successful
+[2025-04-09 15:50:20] Admins table exists: Yes
+[2025-04-09 15:50:20] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:50:20] Using 'admin_id' column for lookup
+[2025-04-09 15:50:20] No admin found with ID: 9
+[2025-04-09 15:50:20] Authentication failed - redirecting back to login
+[2025-04-09 15:50:26] Login attempt with ID: 9
+[2025-04-09 15:50:26] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:50:26] Database connection test: Successful
+[2025-04-09 15:50:26] Admins table exists: Yes
+[2025-04-09 15:50:26] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:50:26] Using 'admin_id' column for lookup
+[2025-04-09 15:50:26] No admin found with ID: 9
+[2025-04-09 15:50:26] Authentication failed - redirecting back to login
+[2025-04-09 15:50:41] Login attempt with ID: 9
+[2025-04-09 15:50:41] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:50:41] Database connection test: Successful
+[2025-04-09 15:50:41] Admins table exists: Yes
+[2025-04-09 15:50:41] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:50:41] Using 'admin_id' column for lookup
+[2025-04-09 15:50:41] No admin found with ID: 9
+[2025-04-09 15:50:41] Authentication failed - redirecting back to login
+[2025-04-09 15:55:28] Login attempt with ID: 9
+[2025-04-09 15:55:28] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:55:28] Database connection test: Successful
+[2025-04-09 15:55:28] Admins table exists: Yes
+[2025-04-09 15:55:28] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:55:28] Using 'admin_id' column for lookup
+[2025-04-09 15:55:28] No admin found with ID: 9
+[2025-04-09 15:55:28] Authentication failed - redirecting back to login
+[2025-04-09 15:55:39] Login attempt with ID: 9
+[2025-04-09 15:55:39] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:55:39] Database connection test: Successful
+[2025-04-09 15:55:39] Admins table exists: Yes
+[2025-04-09 15:55:39] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:55:39] Using 'admin_id' column for lookup
+[2025-04-09 15:55:39] No admin found with ID: 9
+[2025-04-09 15:55:39] Authentication failed - redirecting back to login
+[2025-04-09 15:56:35] Login attempt with ID: 40
+[2025-04-09 15:56:35] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:56:35] Database connection test: Successful
+[2025-04-09 15:56:35] Admins table exists: Yes
+[2025-04-09 15:56:36] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:56:36] Using 'admin_id' column for lookup
+[2025-04-09 15:56:36] No admin found with ID: 40
+[2025-04-09 15:56:36] Authentication failed - redirecting back to login
+[2025-04-09 15:56:41] Login attempt with ID: 40
+[2025-04-09 15:56:41] Database config check: Host=undefined, Database=undefined
+[2025-04-09 15:56:41] Database connection test: Successful
+[2025-04-09 15:56:41] Admins table exists: Yes
+[2025-04-09 15:56:41] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 15:56:41] Using 'admin_id' column for lookup
+[2025-04-09 15:56:41] No admin found with ID: 40
+[2025-04-09 15:56:41] Authentication failed - redirecting back to login
+[2025-04-09 16:05:13] Login attempt with ID: 40
+[2025-04-09 16:05:13] No admin found with ID: 40
+[2025-04-09 16:07:25] Login attempt with ID: 4001
+[2025-04-09 16:07:25] No admin found with ID: 4001
+[2025-04-09 16:07:43] Login attempt with ID: 12
+[2025-04-09 16:07:43] No admin found with ID: 12
+[2025-04-09 16:12:56] Login attempt with ID: 1
+[2025-04-09 16:12:56] No admin found with ID: 1
+[2025-04-09 16:13:02] Login attempt with ID: 1
+[2025-04-09 16:13:02] No admin found with ID: 1
+[2025-04-09 16:13:03] Login attempt with ID: 1
+[2025-04-09 16:13:03] No admin found with ID: 1
+[2025-04-09 16:13:17] Login attempt with ID: 14
+[2025-04-09 16:13:17] No admin found with ID: 14
+[2025-04-09 16:13:59] Login attempt with ID: admin123
+[2025-04-09 16:13:59] Password verification failed
+[2025-04-09 16:14:00] Login attempt with ID: 1
+[2025-04-09 16:14:00] No admin found with ID: 1
+[2025-04-09 16:20:44] Login attempt with ID: 12
+[2025-04-09 16:20:44] Database connection test: Successful
+[2025-04-09 16:20:44] Admins table exists: Yes
+[2025-04-09 16:20:44] All admin records: Array
+(
+    [0] => Array
+        (
+            [id] => 13
+            [admin_id] => admin123
+            [username] => 
+            [name] => Administrator
+            [email] => admin@example.com
+            [password] => You***ord
+            [created_at] => 2025-04-09 16:11:29
+        )
+
+    [1] => Array
+        (
+            [id] => 15
+            [admin_id] => 
+            [username] => vincentebadua@gmail.com
+            [name] => 
+            [email] => vincentebadua@gmail.com
+            [password] => $2y***weS
+            [created_at] => 2025-04-09 16:20:39
+        )
+
+)
+
+[2025-04-09 16:20:44] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 16:20:44] Using 'admin_id' as the admin ID column
+[2025-04-09 16:20:44] Query: SELECT * FROM admins WHERE admin_id = :admin_id
+[2025-04-09 16:20:44] Found admin record? No
+[2025-04-09 16:20:44] No admin found with ID: 12
+[2025-04-09 16:21:07] Login attempt with ID: 15
+[2025-04-09 16:21:07] Database connection test: Successful
+[2025-04-09 16:21:07] Admins table exists: Yes
+[2025-04-09 16:21:07] All admin records: Array
+(
+    [0] => Array
+        (
+            [id] => 13
+            [admin_id] => admin123
+            [username] => 
+            [name] => Administrator
+            [email] => admin@example.com
+            [password] => You***ord
+            [created_at] => 2025-04-09 16:11:29
+        )
+
+    [1] => Array
+        (
+            [id] => 15
+            [admin_id] => 
+            [username] => vincentebadua@gmail.com
+            [name] => 
+            [email] => vincentebadua@gmail.com
+            [password] => $2y***weS
+            [created_at] => 2025-04-09 16:20:39
+        )
+
+)
+
+[2025-04-09 16:21:07] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 16:21:07] Using 'admin_id' as the admin ID column
+[2025-04-09 16:21:07] Query: SELECT * FROM admins WHERE admin_id = :admin_id
+[2025-04-09 16:21:07] Found admin record? No
+[2025-04-09 16:21:07] No admin found with ID: 15
+[2025-04-09 16:22:31] Login attempt with ID: 12
+[2025-04-09 16:22:31] Database connection test: Successful
+[2025-04-09 16:22:31] Admins table exists: Yes
+[2025-04-09 16:22:31] All admin records: Array
+(
+    [0] => Array
+        (
+            [id] => 13
+            [admin_id] => admin123
+            [username] => 
+            [name] => Administrator
+            [email] => admin@example.com
+            [password] => You***ord
+            [created_at] => 2025-04-09 16:11:29
+        )
+
+    [1] => Array
+        (
+            [id] => 15
+            [admin_id] => 
+            [username] => vincentebadua@gmail.com
+            [name] => 
+            [email] => vincentebadua@gmail.com
+            [password] => $2y***weS
+            [created_at] => 2025-04-09 16:20:39
+        )
+
+)
+
+[2025-04-09 16:22:31] Available columns in admins table: id, admin_id, username, name, email, password, created_at
+[2025-04-09 16:22:31] Using 'admin_id' as the admin ID column
+[2025-04-09 16:22:31] Query: SELECT * FROM admins WHERE admin_id = :admin_id
+[2025-04-09 16:22:31] Found admin record? No
+[2025-04-09 16:22:31] No admin found with ID: 12
