@@ -215,13 +215,14 @@ h6 {
 }
 
 /* === TAB CONTENT === */
+.tab-content.active {
+    display: block;
+}
+
 .tab-content {
     display: none;
 }
 
-.tab-content.active {
-    display: block;
-}
 
 /* === DASHBOARD TAB === */
 .welcome-card {
