@@ -43,6 +43,7 @@ try {
             email VARCHAR(100) NOT NULL,
             section_id INT NOT NULL,
             photo VARCHAR(255),
+            qr_code TEXT,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (section_id) REFERENCES sections(id)
         )",
@@ -61,7 +62,13 @@ try {
         // Create a default admin user
         "INSERT INTO admins (username, password, name) 
          VALUES ('admin', '" . password_hash('admin123', PASSWORD_DEFAULT) . "', 'Administrator')
+         ON DUPLICATE KEY UPDATE id=id",
+
+        // Create a default section
+        "INSERT INTO sections (section_name, description, schedule, admin_id)
+         VALUES ('Default Section', 'Initial section for new students', 'Mon-Fri 8am-5pm', 1)
          ON DUPLICATE KEY UPDATE id=id"
+ 
     ];
 
     // Execute each query
@@ -72,7 +79,8 @@ try {
     echo "Database tables created successfully! Default admin credentials:<br>";
     echo "Username: admin<br>";
     echo "Password: admin123";
-
+    echo "Default section created for student registration";
+    
 } catch(PDOException $e) {
     die("Setup failed: " . $e->getMessage());
 }

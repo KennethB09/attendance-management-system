@@ -1,3 +1,4 @@
+/* Base styles */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
@@ -14,7 +15,7 @@
         }
 
         .container {
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
@@ -25,15 +26,25 @@
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
-        h2 {
-            color: #ffffff;
+        .logo {
             text-align: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            color: #ffffff;
+            font-size: 2rem;
+            margin: 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
+        .logo p {
+            color: rgba(255, 255, 255, 0.8);
+            margin-top: 0.5rem;
+        }
+
         .form-group {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         label {
@@ -44,7 +55,7 @@
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
         }
 
-        input {
+        input, select {
             width: 100%;
             padding: 0.75rem;
             background: rgba(255, 255, 255, 0.1);
@@ -60,7 +71,7 @@
             color: rgba(255, 255, 255, 0.6);
         }
 
-        input:focus {
+        input:focus, select:focus {
             outline: none;
             background: rgba(255, 255, 255, 0.2);
             border-color: rgba(255, 255, 255, 0.4);
@@ -75,11 +86,12 @@
             border: none;
             border-radius: 8px;
             font-size: 1rem;
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
+            margin-bottom: 1rem;
         }
 
         button:hover {
@@ -88,63 +100,76 @@
             box-shadow: 0 4px 15px rgba(67, 97, 238, 0.3);
         }
 
+        .links {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .links a {
+            color: #ffffff;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .links a:hover {
+            color: rgba(67, 97, 238, 0.8);
+        }
+
         .error-message {
             background: rgba(239, 68, 68, 0.2);
             color: #ffffff;
-            padding: 0.75rem;
+            padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
             text-align: center;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             border: 1px solid rgba(239, 68, 68, 0.3);
+            animation: slideIn 0.3s ease-out;
         }
 
         .success-message {
-            background: rgba(16, 185, 129, 0.2);
+            background: rgba(22, 163, 74, 0.2);
             color: #ffffff;
-            padding: 0.75rem;
+            padding: 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
             text-align: center;
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            border: 1px solid rgba(22, 163, 74, 0.3);
+            animation: slideIn 0.3s ease-out;
         }
 
         #qrcode {
-            text-align: center;
-            margin-top: 1.5rem;
-            display: none;
-            background: white;
-            padding: 1rem;
-            border-radius: 8px;
-            max-width: 150px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 1.5rem auto;
+            display: flex;
+            justify-content: center;
         }
 
-        .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            color: #ffffff;
+        @keyframes slideIn {
+            from {
+                transform: translateY(-10px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
         }
 
-        .login-link a {
-            color: #ffffff;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            font-weight: 500;
-        }
-
-        .login-link a:hover {
-            color: rgba(67, 97, 238, 0.8);
-            text-decoration: underline;
-        }
-
+        /* Responsive adjustments */
         @media (max-width: 480px) {
             .container {
                 width: 95%;
                 padding: 1.5rem;
+            }
+
+            .logo h1 {
+                font-size: 1.75rem;
             }
         }

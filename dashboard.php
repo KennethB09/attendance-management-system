@@ -1,7 +1,5 @@
 <?php
-
-session_start();
-
+require_once 'config.php';
 // Check if user is logged in
 if (!isset($_SESSION['student_id'])) {
     // Redirect to login page if not logged in
@@ -13,12 +11,9 @@ if (!isset($_SESSION['student_id'])) {
 $student_id = $_SESSION['student_id'];
 $student_name = $_SESSION['student_name'];
 
-// Include database configuration
-require_once 'config.php';
-
 // Handle profile picture upload
 $upload_message = '';
-if (isset($_POST['upload_profile_pic']) && isset($_FILES['profile_picture'])) {
+if (isset($_POST['upload_profile_pic']) && isset($_FILES['photo'])) {
     $target_dir = "uploads/profile_pictures/";
     
     // Create directory if it doesn't exist
@@ -26,15 +21,15 @@ if (isset($_POST['upload_profile_pic']) && isset($_FILES['profile_picture'])) {
         mkdir($target_dir, 0777, true);
     }
     
-    $file_extension = strtolower(pathinfo($_FILES["profile_picture"]["name"], PATHINFO_EXTENSION));
+    $file_extension = strtolower(pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION));
     $new_filename = $student_id . "_" . time() . "." . $file_extension;
     $target_file = $target_dir . $new_filename;
     
     // Check if image file is an actual image
-    $check = getimagesize($_FILES["profile_picture"]["tmp_name"]);
+    $check = getimagesize($_FILES["photo"]["tmp_name"]);
     if ($check !== false) {
         // Check file size (limit to 5MB)
-        if ($_FILES["profile_picture"]["size"] > 5000000) {
+        if ($_FILES["photo"]["size"] > 5000000) {
             $upload_message = "Sorry, your file is too large. Max size is 5MB.";
         } else {
             // Allow only certain file formats
@@ -42,12 +37,12 @@ if (isset($_POST['upload_profile_pic']) && isset($_FILES['profile_picture'])) {
                 $upload_message = "Sorry, only JPG, JPEG & PNG files are allowed.";
             } else {
                 // Upload file and update database
-                if (move_uploaded_file($_FILES["profile_picture"]["tmp_name"], $target_file)) {
+                if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
                     try {
-                        $stmt = $pdo->prepare("UPDATE students SET profile_picture = ? WHERE student_id = ?");
+                        $stmt = $pdo->prepare("UPDATE students SET photo = ? WHERE student_id = ?");
                         $stmt->execute([$target_file, $student_id]);
                         $upload_message = "Your profile picture has been updated successfully!";
-                        $_SESSION['profile_picture'] = $target_file;
+                        $_SESSION['photo'] = $target_file;
                     } catch(PDOException $e) {
                         $upload_message = "Database error: " . $e->getMessage();
                     }
