@@ -22,6 +22,18 @@ try {
             FOREIGN KEY (admin_id) REFERENCES admins(id)
         )",
 
+        "CREATE TABLE IF NOT EXISTS classes (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            class_name VARCHAR(100) NOT NULL,
+            section_id INT NOT NULL,
+            start_time TIME,
+            end_time TIME,
+            created_by INT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (created_by) REFERENCES admins(id),
+            FOREIGN KEY (section_id) REFERENCES sections(id)
+        )",
+
         "CREATE TABLE IF NOT EXISTS students (
             id INT PRIMARY KEY AUTO_INCREMENT,
             student_id VARCHAR(20) UNIQUE NOT NULL,

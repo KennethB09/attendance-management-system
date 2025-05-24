@@ -71,7 +71,7 @@ if (isset($_POST['action'])) {
         $class_id = sanitize($_POST['class_id']);
 
         // Check if student exists
-        $check_query = "SELECT id FROM users WHERE student_id = ? AND role = 'student'";
+        $check_query = "SELECT id FROM students WHERE student_id = ? AND role = 'student'";
         $check_stmt = mysqli_prepare($conn, $check_query);
         mysqli_stmt_bind_param($check_stmt, "s", $student_id);
         mysqli_stmt_execute($check_stmt);
@@ -121,7 +121,7 @@ if (isset($_POST['action'])) {
         $weight = sanitize($_POST['weight']);
 
         // Get user ID from student ID
-        $user_query = "SELECT id FROM users WHERE student_id = ? AND role = 'student'";
+        $user_query = "SELECT id FROM students WHERE student_id = ? AND role = 'student'";
         $user_stmt = mysqli_prepare($conn, $user_query);
         mysqli_stmt_bind_param($user_stmt, "s", $student_id);
         mysqli_stmt_execute($user_stmt);
@@ -174,7 +174,7 @@ if (isset($_POST['action'])) {
         $name = sanitize($_POST['name']);
         $email = sanitize($_POST['email']);
 
-        $query = "UPDATE users SET name = ?, email = ? WHERE id = ?";
+        $query = "UPDATE students SET name = ?, email = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "ssi", $name, $email, $admin_id);
 
@@ -194,7 +194,7 @@ if (isset($_POST['action'])) {
         $confirm_password = $_POST['confirm_password'];
 
         // Get current password hash
-        $query = "SELECT password FROM users WHERE id = ?";
+        $query = "SELECT password FROM students WHERE id = ?";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "i", $admin_id);
         mysqli_stmt_execute($stmt);
@@ -215,7 +215,7 @@ if (isset($_POST['action'])) {
 
         // Update password
         $password_hash = password_hash($new_password, PASSWORD_DEFAULT);
-        $query = "UPDATE users SET password = ? WHERE id = ?";
+        $query = "UPDATE students SET password = ? WHERE id = ?";
         $stmt = mysqli_prepare($conn, $query);
         mysqli_stmt_bind_param($stmt, "si", $password_hash, $admin_id);
 
@@ -252,7 +252,7 @@ if (isset($_POST['action'])) {
         $date = sanitize($_POST['date']);
 
         // Get user ID from student ID
-        $user_query = "SELECT id FROM users WHERE student_id = ? AND role = 'student'";
+        $user_query = "SELECT id FROM students WHERE student_id = ? AND role = 'student'";
         $user_stmt = mysqli_prepare($conn, $user_query);
         mysqli_stmt_bind_param($user_stmt, "s", $student_id);
         mysqli_stmt_execute($user_stmt);
@@ -297,8 +297,8 @@ if (isset($_POST['action'])) {
 }
 
 // Get all classes for the admin
-/*
-$classes_query = "SELECT * FROM classes WHERE created_by = ? ORDER BY name";
+
+$classes_query = "SELECT * FROM classes WHERE created_by = ? ORDER BY class_name";
 $classes_stmt = mysqli_prepare($conn, $classes_query);
 mysqli_stmt_bind_param($classes_stmt, "i", $admin_id);
 mysqli_stmt_execute($classes_stmt);
@@ -306,13 +306,14 @@ $classes_result = mysqli_stmt_get_result($classes_stmt);
 $classes = [];
 while ($row = mysqli_fetch_assoc($classes_result)) {
     $classes[] = $row;
-}*/
+}
 
 // Get recent attendance records
 
 
 // Get attendance statistics
-/*$stats_query = "
+
+$stats_query = "
     SELECT 
         COUNT(CASE WHEN a.status = 'present' THEN 1 END) as present_count,
         COUNT(CASE WHEN a.status = 'late' THEN 1 END) as late_count,
@@ -326,7 +327,7 @@ $stats_stmt = mysqli_prepare($conn, $stats_query);
 mysqli_stmt_bind_param($stats_stmt, "i", $admin_id);
 mysqli_stmt_execute($stats_stmt);
 $stats_result = mysqli_stmt_get_result($stats_stmt);
-$attendance_stats = mysqli_fetch_assoc($stats_result);*/
+$attendance_stats = mysqli_fetch_assoc($stats_result);
 
 // Get recent announcements
 
@@ -1499,7 +1500,7 @@ $active_tab = isset($_GET['tab']) ? sanitize($_GET['tab']) : 'dashboard';
                                             $enrolled_query = "
                                         SELECT u.id, u.name, u.student_id, u.email
                                         FROM class_enrollments e
-                                        JOIN users u ON e.user_id = u.id
+                                        JOIN students u ON e.user_id = u.id
                                         WHERE e.class_id = ?
                                         ORDER BY u.name
                                     ";
