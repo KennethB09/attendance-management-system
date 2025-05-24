@@ -25,19 +25,21 @@ try {
         "CREATE TABLE IF NOT EXISTS classes (
             id INT PRIMARY KEY AUTO_INCREMENT,
             class_name VARCHAR(100) NOT NULL,
-            section_id INT NOT NULL,
+            code VARCHAR(20) NOT NULL UNIQUE,
+            description TEXT,
             start_time TIME,
             end_time TIME,
+            days VARCHAR(20),
             created_by INT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (created_by) REFERENCES admins(id),
-            FOREIGN KEY (section_id) REFERENCES sections(id)
+            FOREIGN KEY (created_by) REFERENCES admins(id)
         )",
 
         "CREATE TABLE IF NOT EXISTS students (
             id INT PRIMARY KEY AUTO_INCREMENT,
             student_id VARCHAR(20) UNIQUE NOT NULL,
             name VARCHAR(100) NOT NULL,
+            password VARCHAR(100) NOT NULL,
             email VARCHAR(100) NOT NULL,
             section_id INT NOT NULL,
             photo VARCHAR(255),
