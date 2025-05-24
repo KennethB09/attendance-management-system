@@ -30,6 +30,7 @@ try {
             start_time TIME,
             end_time TIME,
             days VARCHAR(20),
+            late_threshold INT NOT NULL,
             created_by INT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (created_by) REFERENCES admins(id)

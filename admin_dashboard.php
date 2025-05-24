@@ -336,8 +336,7 @@ $attendance_stats = mysqli_fetch_assoc($stats_result);
 
 
 // Current active tab
-$active_tab = isset($_GET['tab']) ? sanitize($_GET['tab']) : 'dashboard';
-echo $active_tab;
+$active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 ?>
 
 <!DOCTYPE html>
@@ -377,7 +376,7 @@ echo $active_tab;
                 <p><strong>Email:</strong> <?php echo isset($admin['email']) ? htmlspecialchars($admin['email']) : 'N/A'; ?></p>
                 <p><strong>Role:</strong> Administrator</p>
                 <p><strong>Classes:</strong> <?php echo isset($classes) ? count($classes) : 0; ?></p>
-            </div>>
+            </div>
 
             <div class="main-content">
                 <div class="dashboard-nav">
@@ -402,159 +401,158 @@ echo $active_tab;
                 </div>
 
                 <!-- Dashboard Tab -->
-                <div class="tab-content <?php echo $active_tab == 'admin_dashboard' ? 'active' : ''; ?>" id="dashboard-tab">
+                <div class="tab-content <?php echo $active_tab == 'dashboard' ? 'active' : ''; ?>" id="dashboard-tab">
                     <div class="welcome-card">
                         <h2>Welcome, <?php echo htmlspecialchars($admin['name']); ?>!</h2>
                         <p>Here's a quick overview of your classes and recent activities. Use the navigation above to manage your classes, students, and more.</p>
                     </div>
-                </div>
 
-                <h2 class="section-title">Attendance Overview</h2>
-                <div class="attendance-stats">
-                    <div class="stat-card">
-                        <div class="stat-value"><?php echo $attendance_stats['present_count'] ?? 0; ?></div>
-                        <div class="stat-label">Present</div>
+                    <h2 class="section-title">Attendance Overview</h2>
+                    <div class="attendance-stats">
+                        <div class="stat-card">
+                            <div class="stat-value"><?php echo $attendance_stats['present_count'] ?? 0; ?></div>
+                            <div class="stat-label">Present</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value"><?php echo $attendance_stats['late_count'] ?? 0; ?></div>
+                            <div class="stat-label">Late</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value"><?php echo $attendance_stats['absent_count'] ?? 0; ?></div>
+                            <div class="stat-label">Absent</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value"><?php echo count($classes); ?></div>
+                            <div class="stat-label">Classes</div>
+                        </div>
                     </div>
-                    <div class="stat-card">
-                        <div class="stat-value"><?php echo $attendance_stats['late_count'] ?? 0; ?></div>
-                        <div class="stat-label">Late</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value"><?php echo $attendance_stats['absent_count'] ?? 0; ?></div>
-                        <div class="stat-label">Absent</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value"><?php echo count($classes); ?></div>
-                        <div class="stat-label">Classes</div>
-                    </div>
-                </div>
 
-                <h2 class="section-title">Recent Attendance</h2>
-                <?php if (isset($recent_attendance) && count($recent_attendance) > 0): ?>
-                    <table class="attendance-table">
-                        <thead>
-                            <tr>
-                                <th>Student</th>
-                                <th>Student ID</th>
-                                <th>Class</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($recent_attendance as $attendance): ?>
+                    <h2 class="section-title">Recent Attendance</h2>
+                    <?php if (isset($recent_attendance) && count($recent_attendance) > 0): ?>
+                        <table class="attendance-table">
+                            <thead>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($attendance['date']); ?></td>
-                                    <td><?php echo htmlspecialchars($attendance['student_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($attendance['class_name']); ?></td>
-                                    <td><?php echo htmlspecialchars($attendance['status']); ?></td>
+                                    <th>Student</th>
+                                    <th>Student ID</th>
+                                    <th>Class</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
                                 </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else: ?>
-                    <p>No recent attendance records found.</p>
-                <?php endif; ?>
-                <a href="?tab=attendance" class="view-all-btn">View All Attendance</a>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($recent_attendance as $attendance): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($attendance['date']); ?></td>
+                                        <td><?php echo htmlspecialchars($attendance['student_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($attendance['class_name']); ?></td>
+                                        <td><?php echo htmlspecialchars($attendance['status']); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    <?php else: ?>
+                        <p>No recent attendance records found.</p>
+                    <?php endif; ?>
+                    <a href="?tab=attendance" class="view-all-btn">View All Attendance</a>
 
-                <?php
-                // Initialize the $recent_announcements variable before use
-                $recent_announcements = [];
+                    <?php
+                    // Initialize the $recent_announcements variable before use
+                    $recent_announcements = [];
 
-                // Database connection (make sure this exists before this code)
-                if (isset($conn)) {
-                    try {
-                        // First, let's check the table structure to determine what columns actually exist
-                        $check_table = $conn->query("DESCRIBE announcements");
+                    // Database connection (make sure this exists before this code)
+                    if (isset($conn)) {
+                        try {
+                            // First, let's check the table structure to determine what columns actually exist
+                            $check_table = $conn->query("DESCRIBE announcements");
 
-                        if ($check_table) {
-                            $columns = [];
-                            while ($column = $check_table->fetch_assoc()) {
-                                $columns[] = $column['Field'];
-                            }
+                            if ($check_table) {
+                                $columns = [];
+                                while ($column = $check_table->fetch_assoc()) {
+                                    $columns[] = $column['Field'];
+                                }
 
-                            // Determine which content column to use (message, content, description, etc.)
-                            $content_column = null;
-                            foreach (['message', 'content', 'description', 'announcement_text', 'text'] as $possible_column) {
-                                if (in_array($possible_column, $columns)) {
-                                    $content_column = $possible_column;
-                                    break;
+                                // Determine which content column to use (message, content, description, etc.)
+                                $content_column = null;
+                                foreach (['message', 'content', 'description', 'announcement_text', 'text'] as $possible_column) {
+                                    if (in_array($possible_column, $columns)) {
+                                        $content_column = $possible_column;
+                                        break;
+                                    }
+                                }
+
+                                // Check if class_id column exists for joining
+                                $has_class_id = in_array('class_id', $columns);
+                                $has_is_global = in_array('is_global', $columns);
+
+                                // Build the query based on existing columns
+                                $select_fields = "a.id, a.title, ";
+
+                                // Add the content column if found
+                                if ($content_column) {
+                                    $select_fields .= "a.$content_column AS content, ";
+                                } else {
+                                    $select_fields .= "'' AS content, ";
+                                }
+
+                                $select_fields .= "a.created_at";
+
+                                // Add is_global if exists
+                                if ($has_is_global) {
+                                    $select_fields .= ", a.is_global";
+                                } else {
+                                    $select_fields .= ", 0 AS is_global";
+                                }
+
+                                // Build the query
+                                $query = "SELECT $select_fields FROM announcements a";
+
+                                // Add class join if class_id exists
+                                if ($has_class_id) {
+                                    $query .= " LEFT JOIN classes c ON a.class_id = c.id";
+                                    $select_fields .= ", COALESCE(c.class_name, 'N/A') as class_name";
+                                } else {
+                                    $select_fields .= ", 'N/A' as class_name";
+                                }
+
+                                $query .= " ORDER BY a.created_at DESC LIMIT 5";
+
+                                // Execute the query
+                                $result = $conn->query($query);
+
+                                if ($result) {
+                                    $recent_announcements = $result->fetch_all(MYSQLI_ASSOC);
                                 }
                             }
-
-                            // Check if class_id column exists for joining
-                            $has_class_id = in_array('class_id', $columns);
-                            $has_is_global = in_array('is_global', $columns);
-
-                            // Build the query based on existing columns
-                            $select_fields = "a.id, a.title, ";
-
-                            // Add the content column if found
-                            if ($content_column) {
-                                $select_fields .= "a.$content_column AS content, ";
-                            } else {
-                                $select_fields .= "'' AS content, ";
-                            }
-
-                            $select_fields .= "a.created_at";
-
-                            // Add is_global if exists
-                            if ($has_is_global) {
-                                $select_fields .= ", a.is_global";
-                            } else {
-                                $select_fields .= ", 0 AS is_global";
-                            }
-
-                            // Build the query
-                            $query = "SELECT $select_fields FROM announcements a";
-
-                            // Add class join if class_id exists
-                            if ($has_class_id) {
-                                $query .= " LEFT JOIN classes c ON a.class_id = c.id";
-                                $select_fields .= ", COALESCE(c.class_name, 'N/A') as class_name";
-                            } else {
-                                $select_fields .= ", 'N/A' as class_name";
-                            }
-
-                            $query .= " ORDER BY a.created_at DESC LIMIT 5";
-
-                            // Execute the query
-                            $result = $conn->query($query);
-
-                            if ($result) {
-                                $recent_announcements = $result->fetch_all(MYSQLI_ASSOC);
-                            }
+                        } catch (Exception $e) {
+                            // Log the error for debugging
+                            error_log("Error fetching announcements: " . $e->getMessage());
                         }
-                    } catch (Exception $e) {
-                        // Log the error for debugging
-                        error_log("Error fetching announcements: " . $e->getMessage());
                     }
-                }
-                ?>
+                    ?>
 
-                <h2 class="section-title">Recent Announcements</h2>
-                <?php if (!empty($recent_announcements)): ?>
-                    <?php foreach ($recent_announcements as $announcement): ?>
-                        <div class="notification-item">
-                            <div class="notification-header">
-                                <div class="notification-title"><?php echo htmlspecialchars($announcement['title']); ?></div>
-                                <div class="notification-date"><?php echo date('M d, Y', strtotime($announcement['created_at'])); ?></div>
+                    <h2 class="section-title">Recent Announcements</h2>
+                    <?php if (!empty($recent_announcements)): ?>
+                        <?php foreach ($recent_announcements as $announcement): ?>
+                            <div class="notification-item">
+                                <div class="notification-header">
+                                    <div class="notification-title"><?php echo htmlspecialchars($announcement['title']); ?></div>
+                                    <div class="notification-date"><?php echo date('M d, Y', strtotime($announcement['created_at'])); ?></div>
+                                </div>
+                                <div class="notification-sender">
+                                    <?php if ($announcement['is_global']): ?>
+                                        <span class="badge">Global Announcement</span>
+                                    <?php else: ?>
+                                        <span class="badge">Class: <?php echo htmlspecialchars($announcement['class_name']); ?></span>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="notification-message"><?php echo nl2br(htmlspecialchars($announcement['message'])); ?></div>
                             </div>
-                            <div class="notification-sender">
-                                <?php if ($announcement['is_global']): ?>
-                                    <span class="badge">Global Announcement</span>
-                                <?php else: ?>
-                                    <span class="badge">Class: <?php echo htmlspecialchars($announcement['class_name']); ?></span>
-                                <?php endif; ?>
-                            </div>
-                            <div class="notification-message"><?php echo nl2br(htmlspecialchars($announcement['message'])); ?></div>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else: ?>
-                    <div class="no-records">No announcements found.</div>
-                <?php endif; ?>
-                <a href="?tab=announcements" class="view-all-btn">View All Announcements</a>
-
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <div class="no-records">No announcements found.</div>
+                    <?php endif; ?>
+                    <a href="?tab=announcements" class="view-all-btn">View All Announcements</a>
+                </div>
 
                 <!-- Classes Tab -->
                 <div class="tab-content <?php echo $active_tab == 'classes' ? 'active' : ''; ?>" id="classes-tab">
@@ -626,7 +624,7 @@ echo $active_tab;
                                         </div>
                                     </div>
                                     <div class="course-details">
-                                        <div class="course-description"><?php echo nl2br(htmlspecialchars($class['description'])); ?></div>
+                                        <div class="course-description"><?php echo htmlspecialchars($class['description']); ?></div>
                                         <div class="course-instructor">
                                             <strong>Schedule:</strong> <?php echo htmlspecialchars($class['days']); ?>,
                                             <?php echo date('h:i A', strtotime($class['start_time'])); ?> -
@@ -635,27 +633,28 @@ echo $active_tab;
                                         <div class="course-instructor">
                                             <strong>Late Threshold:</strong> <?php echo $class['late_threshold']; ?> minutes
                                         </div>
-
+                                        
+                                        <!-- ITO YUNG PROBLEMA NA KANINA KO PA HIANAHANAP!!!! -->
                                         <h4>Enrolled Students</h4>
                                         <div class="enrolled-students-container">
                                             <?php
-                                            $enrolled_query = "
-                                        SELECT u.id, u.name, u.student_id, u.email
-                                        FROM class_enrollments e
-                                        JOIN students u ON e.user_id = u.id
-                                        WHERE e.class_id = ?
-                                        ORDER BY u.name
-                                    ";
-                                            $enrolled_stmt = mysqli_prepare($conn, $enrolled_query);
-                                            mysqli_stmt_bind_param($enrolled_stmt, "i", $class['id']);
-                                            mysqli_stmt_execute($enrolled_stmt);
-                                            $enrolled_result = mysqli_stmt_get_result($enrolled_stmt);
-                                            $enrolled_students = [];
-                                            while ($student = mysqli_fetch_assoc($enrolled_result)) {
-                                                $enrolled_students[] = $student;
-                                            }
+                                                $enrolled_query = "
+                                                    SELECT u.id, u.name, u.student_id, u.email
+                                                    FROM class_enrollments e
+                                                    JOIN students u ON e.user_id = u.id
+                                                    WHERE e.class_id = ?
+                                                    ORDER BY u.name
+                                                ";
+                                                $enrolled_stmt = mysqli_prepare($conn, $enrolled_query);
+                                                mysqli_stmt_bind_param($enrolled_stmt, "i", $class['id']);
+                                                mysqli_stmt_execute($enrolled_stmt);
+                                                $enrolled_result = mysqli_stmt_get_result($enrolled_stmt);
+                                                $enrolled_students = [];
+                                                while ($student = mysqli_fetch_assoc($enrolled_result)) {
+                                                    $enrolled_students[] = $student;
+                                                }
 
-                                            if (count($enrolled_students) > 0):
+                                                if (count($enrolled_students) > 0):
                                             ?>
                                                 <table class="students-table">
                                                     <thead>
@@ -688,7 +687,7 @@ echo $active_tab;
                                                 <div class="no-records">No students enrolled in this class yet.</div>
                                             <?php endif; ?>
                                         </div>
-
+                                        <!-- END DITO, DAPAT MA FIX TO -->
                                         <div class="class-actions">
                                             <h4>Add Student to Class</h4>
                                             <form class="add-student-form">
@@ -716,6 +715,7 @@ echo $active_tab;
                                             </div>
                                         </div>
                                     </div>
+                                    
                                 </div>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -1220,10 +1220,10 @@ echo $active_tab;
             </div>
         </div>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-        <script src="./js/admin-dashboard.js"></script>
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+        <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+        <script defer src="./js/admin-dashboard.js"></script>
 </body>
 
 </html>

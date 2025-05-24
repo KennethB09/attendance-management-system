@@ -123,14 +123,12 @@ h6 {
 /* === SIDEBAR STYLES === */
 .sidebar {
     width: 100%;
-    flex-shrink: 0;
     background-color: white;
     border-radius: var(--border-radius);
     box-shadow: var(--shadow);
     padding: 1.5rem;
     height: fit-content;
-    position: sticky;
-    top: 85px;
+
 }
 
 .qr-container {
