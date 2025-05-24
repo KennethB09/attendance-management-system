@@ -26,6 +26,7 @@ try {
             id INT PRIMARY KEY AUTO_INCREMENT,
             student_id VARCHAR(20) UNIQUE NOT NULL,
             name VARCHAR(100) NOT NULL,
+            email VARCHAR(100) NOT NULL,
             section_id INT NOT NULL,
             photo VARCHAR(255),
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
