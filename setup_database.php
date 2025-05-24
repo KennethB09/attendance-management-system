@@ -43,7 +43,7 @@ try {
             email VARCHAR(100) NOT NULL,
             section_id INT NOT NULL,
             photo VARCHAR(255),
-            qr_code TEXT,
+            qr_code TEXT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (section_id) REFERENCES sections(id)
         )",
