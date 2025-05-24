@@ -21,18 +21,19 @@ if(isset($_SESSION['admin_id'])) {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_id = $_POST['admin_id'];
-    $password = $_POST['password'];
     
     try {
-        $stmt = $pdo->prepare("SELECT * FROM admins WHERE admin_id = ?");
+        $admin_id = $_POST['admin_id'];
+        $password = $_POST['password'];
+
+        $stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
         $stmt->execute([$admin_id]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($admin && password_verify($password, $admin['password'])) {
             // Login successful
-            $_SESSION['admin_id'] = $admin['admin_id'];
-            $_SESSION['admin_name'] = $admin['name'];
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_name'] = $admin['username'];
             
             
             // Log the login activity
@@ -282,7 +283,7 @@ try {
                     required 
                     placeholder="Enter your admin ID"
                     autocomplete="off"
-                    value="<?php echo isset($_POST['admin_id']) ? htmlspecialchars($_POST['admin_id']) : ''; ?>">
+
             </div>
             <div class="form-group">
                 <label>Password</label>
@@ -290,7 +291,9 @@ try {
                     type="password" 
                     name="password" 
                     required 
-                    placeholder="Enter your password">
+                    placeholder="Enter your password"
+                    autocomplete="off">
+                    
             </div>
             <button type="submit">Sign In</button>
             <div class="links">

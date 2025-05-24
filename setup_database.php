@@ -37,8 +37,8 @@ try {
             student_id VARCHAR(20) NOT NULL,
             date DATE NOT NULL,
             status ENUM('present', 'absent', 'late') NOT NULL,
-            check_in TIMESTAMP,
-            check_out TIMESTAMP,
+            check_in TIMESTAMP NULL DEFAULT NULL,
+            check_out TIMESTAMP NULL DEFAULT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             FOREIGN KEY (student_id) REFERENCES students(student_id)
         )",
