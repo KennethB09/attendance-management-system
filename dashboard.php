@@ -63,8 +63,13 @@ try {
     $student_data = $stmt->fetch(PDO::FETCH_ASSOC);
 
     // Get profile picture path from database or use placeholder
+<<<<<<< HEAD
     $profile_picture = isset($student_data['profile_picture']) && !empty($student_data['profile_picture'])
         ? $student_data['profile_picture']
+=======
+    $profile_picture = isset($student_data['photo']) && !empty($student_data['profile_picture']) 
+        ? $student_data['profile_picture'] 
+>>>>>>> 9e86ebbc972085766b55ac75e0834c18257d5dd1
         : "/api/placeholder/40/40";
 } catch (PDOException $e) {
     $error = "Database error: " . $e->getMessage();
@@ -297,6 +302,7 @@ if (isset($_POST['submit_reply']) && isset($_POST['notification_id']) && isset($
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.0/main.min.css" rel="stylesheet" />
+<<<<<<< HEAD
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -1436,6 +1442,9 @@ if (isset($_POST['submit_reply']) && isset($_POST['notification_id']) && isset($
             }
         }
     </style>
+=======
+    <link rel="stylesheet" href="dashboard.css">
+>>>>>>> 9e86ebbc972085766b55ac75e0834c18257d5dd1
 </head>
 
 <body>
