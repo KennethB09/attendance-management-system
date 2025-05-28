@@ -49,6 +49,27 @@ try {
             FOREIGN KEY (section_id) REFERENCES sections(id)
         )",
 
+        " CREATE TABLE IF NOT EXISTS class_enrollments (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            user_id INT NOT NULL,
+            class_id INT NOT NULL,
+            enrolled_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (user_id) REFERENCES students(id),
+            FOREIGN KEY (class_id) REFERENCES classes(id)
+        )",
+
+        "CREATE TABLE IF NOT EXISTS announcements (
+            id INT PRIMARY KEY AUTO_INCREMENT,
+            title VARCHAR(255) NOT NULL,
+            message TEXT NOT NULL,
+            class_id INT DEFAULT NULL,
+            is_global TINYINT(1) DEFAULT 0,
+            created_by INT NOT NULL,
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            FOREIGN KEY (class_id) REFERENCES classes(id),
+            FOREIGN KEY (created_by) REFERENCES admins(id)
+        )",
+
         "CREATE TABLE IF NOT EXISTS attendance (
             id INT PRIMARY KEY AUTO_INCREMENT,
             student_id VARCHAR(20) NOT NULL,
@@ -69,7 +90,7 @@ try {
         "INSERT INTO sections (section_name, description, schedule, admin_id)
          VALUES ('Default Section', 'Initial section for new students', 'Mon-Fri 8am-5pm', 1)
          ON DUPLICATE KEY UPDATE id=id"
- 
+
     ];
 
     // Execute each query
@@ -81,8 +102,6 @@ try {
     echo "Username: admin<br>";
     echo "Password: admin123";
     echo "Default section created for student registration";
-    
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     die("Setup failed: " . $e->getMessage());
 }
-?>

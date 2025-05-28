@@ -22,6 +22,10 @@ if (!isset($_SESSION['admin_id'])) {
     exit;
 }
 
+$error_message = '';
+$success_message = '';
+$warning_message = "";
+
 // Fetch admin data from database - ADD THIS CODE HERE
 $admin_id = $_SESSION['admin_id'];
 $stmt = $conn->prepare("SELECT * FROM admins WHERE id = ?");
@@ -38,8 +42,22 @@ function sanitize($data)
     return mysqli_real_escape_string($conn, htmlspecialchars(trim($data)));
 }
 
+if (isset($_POST["create_section"])) {
+    $section_name = $_POST["section_name"];
+    $section_description = $_POST["section_description"];
+
+    $query = "INSERT INTO sections (section_name, description, admin_id) VALUES (?, ?, ?)";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ssi", $section_name, $section_description, $admin_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $success_message = 'Section created successfully.';
+    } else {
+        $error_message = 'Failed to create section: ' . mysqli_error($conn);
+    }
+}
+
 if (isset($_POST["create_class"])) {
-    echo "run";
     $class_name = sanitize($_POST['class_name']);
     $class_code = sanitize($_POST['class_code']);
     $description = sanitize($_POST['description']);
@@ -53,35 +71,26 @@ if (isset($_POST["create_class"])) {
     mysqli_stmt_bind_param($stmt, "ssssssi", $class_name, $class_code, $description, $start_time, $end_time, $days, $admin_id);
 
     if (mysqli_stmt_execute($stmt)) {
-        echo json_encode(['status' => 'success', 'message' => 'Class created successfully', 'class_id' => mysqli_insert_id($conn)]);
+        $success_message = 'Class created successfully.';
     } else {
-        echo json_encode(['status' => 'error', 'message' => 'Failed to create class: ' . mysqli_error($conn)]);
+        $error_message = 'Failed to create class: ' . mysqli_error($conn);
     }
 }
 
-// Handle AJAX requests
-if (isset($_POST['action'])) {
-    $action = $_POST['action'];
+if (isset($_POST["add_student_to_class"])) {
+    $student_id = sanitize($_POST['student_id']);
+    $class_id = sanitize($_POST['class_id']);
 
-    // Handle class creation
+    // Check if student exists
+    $check_query = "SELECT id FROM students WHERE student_id = ?";
+    $check_stmt = mysqli_prepare($conn, $check_query);
+    mysqli_stmt_bind_param($check_stmt, "s", $student_id);
+    mysqli_stmt_execute($check_stmt);
+    $check_result = mysqli_stmt_get_result($check_stmt);
 
-    // Handle student addition to class
-    if ($action === 'add_student_to_class') {
-        $student_id = sanitize($_POST['student_id']);
-        $class_id = sanitize($_POST['class_id']);
-
-        // Check if student exists
-        $check_query = "SELECT id FROM students WHERE student_id = ? AND role = 'student'";
-        $check_stmt = mysqli_prepare($conn, $check_query);
-        mysqli_stmt_bind_param($check_stmt, "s", $student_id);
-        mysqli_stmt_execute($check_stmt);
-        $check_result = mysqli_stmt_get_result($check_stmt);
-
-        if (mysqli_num_rows($check_result) === 0) {
-            echo json_encode(['status' => 'error', 'message' => 'Student ID not found']);
-            exit;
-        }
-
+    if (mysqli_num_rows($check_result) === 0) {
+        $error_message = "Student ID not found.";
+    } else {
         $user = mysqli_fetch_assoc($check_result);
         $user_id = $user['id'];
 
@@ -93,22 +102,99 @@ if (isset($_POST['action'])) {
         $enrolled_result = mysqli_stmt_get_result($enrolled_stmt);
 
         if (mysqli_num_rows($enrolled_result) > 0) {
-            echo json_encode(['status' => 'error', 'message' => 'Student is already enrolled in this class']);
-            exit;
-        }
-
-        // Enroll student
-        $query = "INSERT INTO class_enrollments (user_id, class_id, enrolled_date) VALUES (?, ?, NOW())";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ii", $user_id, $class_id);
-
-        if (mysqli_stmt_execute($stmt)) {
-            echo json_encode(['status' => 'success', 'message' => 'Student added to class successfully']);
+            $warning_message = "Student is already enrolled in this class.";
         } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to add student: ' . mysqli_error($conn)]);
+            // Enroll student
+            $query = "INSERT INTO class_enrollments (user_id, class_id, enrolled_date) VALUES (?, ?, NOW())";
+            $stmt = mysqli_prepare($conn, $query);
+            mysqli_stmt_bind_param($stmt, "ii", $user_id, $class_id);
+
+            if (mysqli_stmt_execute($stmt)) {
+                $success_message = "Student added to class successfully!";
+            } else {
+                $error_message = 'Failed to add student: ' . mysqli_error($conn);
+            }
         }
-        exit;
     }
+}
+
+if (isset($_POST["add_student_form"])) {
+    $student_id = sanitize($_POST['new_student_id']);
+    $name = sanitize($_POST['student_name']);
+    $email = sanitize($_POST['student_email']);
+    $password = $_POST['student_password'];
+    $section_id = 3;
+    // $section_id = (int)$_POST['section_id'];
+
+    // Validation
+    if (empty($student_id) || empty($name) || empty($email) || empty($password)) {
+        $error_message = "All fields are required";
+    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $error_message = "Invalid email format";
+    } else {
+        // Check if student ID exists
+        $check_stmt = mysqli_prepare($conn, "SELECT id FROM students WHERE student_id = ?");
+        mysqli_stmt_bind_param($check_stmt, "s", $student_id);
+        mysqli_stmt_execute($check_stmt);
+        $check_result = mysqli_stmt_get_result($check_stmt);
+
+        if (mysqli_num_rows($check_result) > 0) {
+            $error_message = "Student ID already exists";
+        } else {
+            // Check if email exists
+            $check_email = mysqli_prepare($conn, "SELECT id FROM students WHERE email = ?");
+            mysqli_stmt_bind_param($check_email, "s", $email);
+            mysqli_stmt_execute($check_email);
+            $email_result = mysqli_stmt_get_result($check_email);
+
+            if (mysqli_num_rows($email_result) > 0) {
+                $error_message = "Email already registered";
+            } else {
+                // Hash password and prepare data
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+                $qr_data = $student_id;
+
+                // Insert student with section_id
+                $stmt = mysqli_prepare($conn, "INSERT INTO students (student_id, name, email, password, qr_code, section_id) VALUES (?, ?, ?, ?, ?, ?)");
+                mysqli_stmt_bind_param($stmt, "sssssi", $student_id, $name, $email, $hashed_password, $qr_data, $section_id);
+
+                if (mysqli_stmt_execute($stmt)) {
+                    $success_message = "Registration successful!";
+                } else {
+                    $error_message = "Registration failed: " . mysqli_error($conn);
+                }
+            }
+        }
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'generate_qr_code') {
+    header('Content-Type: application/json');
+
+    $class_id = intval($_POST['class_id']);
+    $expiry_minutes = intval($_POST['expiry_minutes']);
+
+    // You can customize the QR data as needed
+    $qr_data = json_encode([
+        'class_id' => $class_id,
+        'expires_at' => time() + ($expiry_minutes * 60)
+    ]);
+
+    // Return the QR data as JSON
+    echo json_encode([
+        'status' => 'success',
+        'qr_data' => $qr_data
+    ]);
+    exit;
+}
+
+// Handle AJAX requests
+if (isset($_POST['action'])) {
+    $action = $_POST['action'];
+
+    // Handle class creation
+
+    // Handle student addition to class
 
     // Handle grade addition
     if ($action === 'add_grade') {
@@ -360,6 +446,24 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
         </div>
     </div>
 
+    <?php if (!empty($error_message)): ?>
+        <div class="error-message">
+            <?php echo $error_message; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($success_message)): ?>
+        <div class="success-message">
+            <?php echo $success_message; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if (!empty($warning_message)): ?>
+        <div class="warning-message">
+            <?php echo $warning_message; ?>
+        </div>
+    <?php endif; ?>
+
     <div class="container">
         <div class="sidebar">
             <div class="qr-container">
@@ -558,6 +662,29 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                 <div class="tab-content <?php echo $active_tab == 'classes' ? 'active' : ''; ?>" id="classes-tab">
                     <h2 class="section-title">Manage Classes</h2>
 
+                    <div class="card" id="create-section-card">
+                        <h3>
+                            <div class="card-icon"><i class="fas fa-plus"></i></div> Create Section
+                        </h3>
+                        <div class="card-content">
+                            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="section_name">Section Name</label>
+                                        <input type="text" id="section_name" name="section_name" class="form-control" required>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <label for="description">Description</label>
+                                        <textarea id="description" name="section_description" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <button type="submit" name="create_section" class="btn">Create Section</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
                     <div class="card" id="create-class-card">
                         <h3>
                             <div class="card-icon"><i class="fas fa-plus"></i></div> Create New Class
@@ -620,10 +747,11 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                             <div class="course-code"><?php echo htmlspecialchars($class['code']); ?></div>
                                         </div>
                                         <div>
-                                            <button class="toggle-details-btn"><i class="fas fa-chevron-down"></i></button>
+                                            <button onclick="toggleClassDetails()" class="toggle-details-btn"><i class="fas fa-chevron-down"></i></button>
                                         </div>
                                     </div>
-                                    <div class="course-details">
+
+                                    <div class="course-details" data-visible="false" id="course_details">
                                         <div class="course-description"><?php echo htmlspecialchars($class['description']); ?></div>
                                         <div class="course-instructor">
                                             <strong>Schedule:</strong> <?php echo htmlspecialchars($class['days']); ?>,
@@ -633,28 +761,28 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <div class="course-instructor">
                                             <strong>Late Threshold:</strong> <?php echo $class['late_threshold']; ?> minutes
                                         </div>
-                                        
+
                                         <!-- ITO YUNG PROBLEMA NA KANINA KO PA HIANAHANAP!!!! -->
                                         <h4>Enrolled Students</h4>
                                         <div class="enrolled-students-container">
                                             <?php
-                                                $enrolled_query = "
+                                            $enrolled_query = "
                                                     SELECT u.id, u.name, u.student_id, u.email
                                                     FROM class_enrollments e
                                                     JOIN students u ON e.user_id = u.id
                                                     WHERE e.class_id = ?
                                                     ORDER BY u.name
                                                 ";
-                                                $enrolled_stmt = mysqli_prepare($conn, $enrolled_query);
-                                                mysqli_stmt_bind_param($enrolled_stmt, "i", $class['id']);
-                                                mysqli_stmt_execute($enrolled_stmt);
-                                                $enrolled_result = mysqli_stmt_get_result($enrolled_stmt);
-                                                $enrolled_students = [];
-                                                while ($student = mysqli_fetch_assoc($enrolled_result)) {
-                                                    $enrolled_students[] = $student;
-                                                }
+                                            $enrolled_stmt = mysqli_prepare($conn, $enrolled_query);
+                                            mysqli_stmt_bind_param($enrolled_stmt, "i", $class['id']);
+                                            mysqli_stmt_execute($enrolled_stmt);
+                                            $enrolled_result = mysqli_stmt_get_result($enrolled_stmt);
+                                            $enrolled_students = [];
+                                            while ($student = mysqli_fetch_assoc($enrolled_result)) {
+                                                $enrolled_students[] = $student;
+                                            }
 
-                                                if (count($enrolled_students) > 0):
+                                            if (count($enrolled_students) > 0):
                                             ?>
                                                 <table class="students-table">
                                                     <thead>
@@ -690,13 +818,13 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <!-- END DITO, DAPAT MA FIX TO -->
                                         <div class="class-actions">
                                             <h4>Add Student to Class</h4>
-                                            <form class="add-student-form">
+                                            <form class="add-student-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
                                                 <input type="hidden" name="class_id" value="<?php echo $class['id']; ?>">
                                                 <div class="form-group">
                                                     <label for="student_id_<?php echo $class['id']; ?>">Student ID</label>
                                                     <input type="text" id="student_id_<?php echo $class['id']; ?>" name="student_id" class="form-control" placeholder="Enter Student ID" required>
                                                 </div>
-                                                <button type="submit" class="btn btn-primary">Add Student</button>
+                                                <button name="add_student_to_class" type="submit" class="btn btn-primary">Add Student</button>
                                             </form>
 
                                             <div class="action-buttons">
@@ -715,7 +843,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                             </div>
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             <?php endforeach; ?>
                         <?php else: ?>
@@ -743,7 +871,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             <div class="card-icon"><i class="fas fa-user-plus"></i></div> Add New Student
                         </h3>
                         <div class="card-content">
-                            <form id="add-student-form">
+                            <form id="add-student-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
                                 <div class="form-grid">
                                     <div class="form-group">
                                         <label for="student_name">Full Name</label>
@@ -762,7 +890,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <input type="password" id="student_password" name="student_password" class="form-control" required>
                                     </div>
                                     <div class="form-group full-width">
-                                        <button type="submit" class="btn">Add Student</button>
+                                        <button name="add_student_form" type="submit" class="btn">Add Student</button>
                                     </div>
                                 </div>
                             </form>
@@ -791,7 +919,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <select id="attendance_class" name="class_id" class="form-control" required>
                                             <option value="">Select Class</option>
                                             <?php foreach ($classes as $class): ?>
-                                                <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
+                                                <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['class_name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -824,24 +952,26 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             <div class="card-icon"><i class="fas fa-qrcode"></i></div> QR Attendance
                         </h3>
                         <div class="card-content">
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="qr_class">Class</label>
-                                    <select id="qr_class" class="form-control">
-                                        <option value="">Select Class</option>
-                                        <?php foreach ($classes as $class): ?>
-                                            <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
-                                        <?php endforeach; ?>
-                                    </select>
+                            <form id="generate-qr-form">
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="qr_class">Class</label>
+                                        <select id="qr_class" name="class_id" class="form-control">
+                                            <option value="">Select Class</option>
+                                            <?php foreach ($classes as $class): ?>
+                                                <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['class_name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="qr_expiry">Expiry Time (minutes)</label>
+                                        <input type="number" id="qr_expiry" class="form-control" name="expiry_minutes" min="1" max="60" value="15" required placeholder="Expiry (minutes)">
+                                    </div>
+                                    <div class="form-group full-width">
+                                        <button type="submit" id="generate-qr-btn" class="btn">Generate QR Code</button>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label for="qr_expiry">Expiry Time (minutes)</label>
-                                    <input type="number" id="qr_expiry" class="form-control" min="1" max="60" value="15">
-                                </div>
-                                <div class="form-group full-width">
-                                    <button id="generate-qr-btn" class="btn">Generate QR Code</button>
-                                </div>
-                            </div>
+                            </form>
                             <div id="qr-code-display" class="text-center" style="display: none;">
                                 <div id="qr-code-container"></div>
                                 <div id="qr-expiry-timer">Code expires in: <span id="qr-timer">15:00</span></div>
@@ -856,7 +986,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             <select id="filter_class" class="form-control">
                                 <option value="">All Classes</option>
                                 <?php foreach ($classes as $class): ?>
-                                    <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['name']); ?></option>
+                                    <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['class_name']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
@@ -906,7 +1036,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                     <select id="announcement_class" name="class_id" class="form-control">
                                         <option value="">Global Announcement</option>
                                         <?php foreach ($classes as $class): ?>
-                                            <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
+                                            <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['class_name']); ?> (<?php echo htmlspecialchars($class['code']); ?>)</option>
                                         <?php endforeach; ?>
                                     </select>
                                 </div>
@@ -925,7 +1055,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                     <div id="announcements-container">
                         <?php
                         $all_announcements_query = "
-                        SELECT a.*, c.name as class_name
+                        SELECT a.*, c.class_name
                         FROM announcements a
                         LEFT JOIN classes c ON a.class_id = c.id
                         WHERE a.created_by = ?
@@ -1188,7 +1318,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             <select id="edit_announcement_class" name="class_id" class="form-control">
                                 <option value="">Global Announcement</option>
                                 <?php foreach ($classes as $class): ?>
-                                    <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['name']); ?></option>
+                                    <option value="<?php echo $class['id']; ?>"><?php echo htmlspecialchars($class['class_name']); ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>

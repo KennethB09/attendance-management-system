@@ -1,3 +1,75 @@
+function toggleClassDetails() {
+    const container = document.getElementById("course_details");
+    const visibility = container.getAttribute("data-visible");
+
+    if (visibility === "false") {
+        container.setAttribute("data-visible", "true");
+    } else {
+         container.setAttribute("data-visible", "false");
+    }
+}
+
+document.getElementById('generate-qr-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+
+    const classId = document.getElementById('qr_class').value;
+    const expiryMinutes = document.getElementById('qr_expiry').value;
+
+    if (!classId) {
+        alert('Please select a class.');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('action', 'generate_qr_code');
+    formData.append('class_id', classId);
+    formData.append('expiry_minutes', expiryMinutes);
+
+    try {
+        const response = await fetch('admin_dashboard.php', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            document.getElementById('qr-code-container').innerHTML = '';
+            new QRCode(document.getElementById("qr-code-container"), {
+                text: data.qr_data,
+                width: 256,
+                height: 256
+            });
+            document.getElementById('qr-code-display').style.display = 'block';
+
+            // Start countdown timer
+            let expirySeconds = expiryMinutes * 60;
+            const timerDisplay = document.getElementById('qr-timer');
+
+            function updateTimer() {
+                const minutes = Math.floor(expirySeconds / 60);
+                const seconds = expirySeconds % 60;
+                timerDisplay.textContent = minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+
+                if (expirySeconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('qr-code-display').style.display = 'none';
+                    alert('QR code has expired.');
+                } else {
+                    expirySeconds--;
+                }
+            }
+
+            updateTimer();
+            const timerInterval = setInterval(updateTimer, 1000);
+
+        } else {
+            alert(data.message || 'Error generating QR code');
+        }
+    } catch (e) {
+        alert('An error occurred. Please try again.');
+    }
+});
+
 // $('#create-class-form').on('submit', function (e) {
 //     e.preventDefault();
 //     console.log("fjwbhewbbv")
