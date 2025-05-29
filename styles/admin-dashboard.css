@@ -900,3 +900,16 @@ label {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--primary-dark);
 }
+
+.btn-info {
+    background-color: #17a2b8;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    color: black;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+}

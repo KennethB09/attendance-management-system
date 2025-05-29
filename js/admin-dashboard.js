@@ -70,6 +70,68 @@ document.getElementById('generate-qr-form').addEventListener('submit', async fun
     }
 });
 
+// View Student Details
+document.querySelectorAll('.view-student-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        fetchStudentDetails(studentId);
+    });
+});
+
+// Edit Student
+document.querySelectorAll('.edit-student-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        editStudent(studentId);
+    });
+});
+
+// Delete Student
+document.querySelectorAll('.delete-student-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const studentId = this.getAttribute('data-student-id');
+        deleteStudent(studentId);
+    });
+});
+
+function fetchStudentDetails(studentId) {
+    fetch(`fetch_students.php?id=${studentId}`)
+        .then(response => response.json())
+        .then(data => {
+            // list down modal with student details
+            document.getElementById('student-details-container').innerHTML = `
+                <div class="student-details">
+                    <p><strong>Student ID:</strong> ${data.student_id}</p>
+                    <p><strong>Name:</strong> ${data.name}</p>
+                    <p><strong>Email:</strong> ${data.email}</p>
+                    <p><strong>Section:</strong> ${data.section_name || 'N/A'}</p>
+                    <p><strong>Enrolled Classes:</strong> ${data.classes ? data.classes.join(', ') : 'None'}</p>
+                </div>
+            `;
+            // Show the modal
+            document.getElementById('student-details-modal').style.display = 'block';
+        });
+}
+
+function editStudent(studentId) {
+    // sunod na toh
+}
+
+function deleteStudent(studentId) {
+    if (confirm(`Are you sure you want to delete student ${studentId}?`)) {
+        fetch(`delete_student.php?id=${studentId}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Student deleted successfully');
+                    location.reload(); // Refresh the page
+                } else {
+                    alert('Error deleting student: ' + data.message);
+                }
+            });
+    }
+}
+
 // $('#create-class-form').on('submit', function (e) {
 //     e.preventDefault();
 //     console.log("fjwbhewbbv")
