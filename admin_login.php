@@ -273,7 +273,7 @@ try {
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="form-group">
-                <label>Admin ID</label>
+                <label>Admin name</label>
                 <input 
                     type="text" 
                     name="username" 
