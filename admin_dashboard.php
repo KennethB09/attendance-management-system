@@ -188,6 +188,46 @@ if (isset($_POST['action']) && $_POST['action'] === 'generate_qr_code') {
     exit;
 }
 
+if (isset($_POST["submit_announcement"])) {
+    $title = sanitize($_POST['title']);
+    $message = sanitize($_POST['message']);
+    $class_id = isset($_POST['class_id']) ? sanitize($_POST['class_id']) : null;
+    $is_global = ($class_id === null || $class_id === '') ? 1 : 0;
+
+    $query = "INSERT INTO announcements (title, message, class_id, is_global, created_by, created_at) 
+                  VALUES (?, ?, ?, ?, ?, NOW())";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "ssiii", $title, $message, $class_id, $is_global, $admin_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+        $success_message = "Announcement created successfully!";
+    } else {
+        $error_message = "Failed to create announcement: " . mysqli_error($conn);
+    }
+}
+
+if (isset($_POST['action']) && $_POST['action'] === 'delete_announcement') {
+    header('Content-Type: application/json');
+    $announcement_id = sanitize($_POST['announcement_id']);
+
+    $query = "DELETE FROM announcements WHERE id=?";
+    $stmt = mysqli_prepare($conn, $query);
+    mysqli_stmt_bind_param($stmt, "i", $announcement_id);
+
+    if (mysqli_stmt_execute($stmt)) {
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Announcement deleted successfully.'
+        ]);
+    } else {
+        echo json_encode([
+            'status' => 'failed',
+            'message' => "Failed to delete announcement: " . mysqli_error($conn)
+        ]);
+    }
+    exit;
+}
+
 // Handle AJAX requests
 if (isset($_POST['action'])) {
     $action = $_POST['action'];
@@ -236,24 +276,7 @@ if (isset($_POST['action'])) {
     }
 
     // Handle announcement creation
-    if ($action === 'create_announcement') {
-        $title = sanitize($_POST['title']);
-        $message = sanitize($_POST['message']);
-        $class_id = isset($_POST['class_id']) ? sanitize($_POST['class_id']) : null;
-        $is_global = ($class_id === null || $class_id === '') ? 1 : 0;
 
-        $query = "INSERT INTO announcements (title, message, class_id, is_global, created_by, created_at) 
-                  VALUES (?, ?, ?, ?, ?, NOW())";
-        $stmt = mysqli_prepare($conn, $query);
-        mysqli_stmt_bind_param($stmt, "ssiii", $title, $message, $class_id, $is_global, $admin_id);
-
-        if (mysqli_stmt_execute($stmt)) {
-            echo json_encode(['status' => 'success', 'message' => 'Announcement created successfully']);
-        } else {
-            echo json_encode(['status' => 'error', 'message' => 'Failed to create announcement: ' . mysqli_error($conn)]);
-        }
-        exit;
-    }
 
     // Handle admin profile update
     if ($action === 'update_profile') {
@@ -1026,7 +1049,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                             <div class="card-icon"><i class="fas fa-bullhorn"></i></div> Create Announcement
                         </h3>
                         <div class="card-content">
-                            <form id="create-announcement-form">
+                            <form id="create-announcement-form" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="post">
                                 <div class="form-group">
                                     <label for="announcement_title">Title</label>
                                     <input type="text" id="announcement_title" name="title" class="form-control" required>
@@ -1045,7 +1068,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                     <textarea id="announcement_message" name="message" class="form-control" rows="5" required></textarea>
                                 </div>
                                 <div class="form-group">
-                                    <button type="submit" class="btn">Post Announcement</button>
+                                    <button type="submit" name="submit_announcement" class="btn">Post Announcement</button>
                                 </div>
                             </form>
                         </div>
@@ -1057,7 +1080,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                         $all_announcements_query = "
                         SELECT a.*, c.class_name
                         FROM announcements a
-                        LEFT JOIN classes c ON a.class_id = c.id
+                        JOIN classes c
                         WHERE a.created_by = ?
                         ORDER BY a.created_at DESC
                     ";
@@ -1079,7 +1102,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                         <div class="notification-date"><?php echo date('M d, Y', strtotime($announcement['created_at'])); ?></div>
                                     </div>
                                     <div class="notification-sender">
-                                        <?php if ($announcement['is_global']): ?>
+                                        <?php if ($announcement['is_global'] == 1): ?>
                                             <span class="badge">Global Announcement</span>
                                         <?php else: ?>
                                             <span class="badge">Class: <?php echo htmlspecialchars($announcement['class_name']); ?></span>
@@ -1087,7 +1110,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
                                     </div>
                                     <div class="notification-message"><?php echo nl2br(htmlspecialchars($announcement['message'])); ?></div>
                                     <div class="notification-actions">
-                                        <button class="btn-small btn-danger delete-announcement-btn" data-id="<?php echo $announcement['id']; ?>">
+                                        <button class="btn-small btn-danger delete-announcement-btn" data-id="<?php echo $announcement['id']; ?>" onclick="show_confirm_modal('<?php echo htmlspecialchars($announcement['id']) ?>')">
                                             <i class="fas fa-trash"></i> Delete
                                         </button>
                                         <button class="btn-small btn-warning edit-announcement-btn"
@@ -1334,17 +1357,17 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
             </div>
         </div>
 
-        <div class="modal" id="confirm-modal">
+        <div class="modal confirmation" id="confirm-modal" data-visible="false">
             <div class="modal-content">
                 <div class="modal-header">
                     <h3>Confirmation</h3>
-                    <span class="close-modal">&times;</span>
+                    <span class="close-modal" onclick="show_confirm_modal()">&times;</span>
                 </div>
                 <div class="modal-body">
                     <p id="confirm-message"></p>
                     <div class="form-group text-right">
-                        <button class="btn btn-secondary" id="cancel-confirm">Cancel</button>
-                        <button class="btn btn-danger" id="confirm-action">Confirm</button>
+                        <button class="btn btn-secondary" id="cancel-confirm" onclick="show_confirm_modal()">Cancel</button>
+                        <button class="btn btn-danger" id="confirm-action" data-target="" onclick="delete_announcement()">Confirm</button>
                     </div>
                 </div>
             </div>

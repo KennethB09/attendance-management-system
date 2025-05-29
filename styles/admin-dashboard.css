@@ -735,6 +735,10 @@ label {
 }
 
 /* === MODALS === */
+.modal.confirmation[data-visible="true"] {
+    display: block;
+}
+
 .modal {
     display: none;
     position: fixed;

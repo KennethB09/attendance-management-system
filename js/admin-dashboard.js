@@ -9,6 +9,27 @@ function toggleClassDetails() {
     }
 }
 
+function show_confirm_modal(id) {
+    const modal = document.getElementById("confirm-modal");
+    const modal_visibility = modal.getAttribute("data-visible");
+    const confirm_message = document.getElementById("confirm-message");
+    const confirm_action = document.getElementById("confirm-action");
+
+    if (id !== null) {
+        confirm_action.setAttribute("data-target", id)
+    }
+
+    if (modal_visibility === "false") {
+        modal.setAttribute("data-visible", "true");
+        confirm_message.innerText = 'Are you sure you want to delete this announcement? This action cannot be undone.';
+    } else {
+        modal.setAttribute("data-visible", "false");
+        confirm_message.innerText = '';
+    }
+
+}
+
+
 document.getElementById('generate-qr-form').addEventListener('submit', async function (e) {
     e.preventDefault();
 
@@ -69,6 +90,51 @@ document.getElementById('generate-qr-form').addEventListener('submit', async fun
         alert('An error occurred. Please try again.');
     }
 });
+
+
+async function delete_announcement() {
+    const confirm_action = document.getElementById("confirm-action");
+    const data_target = confirm_action.getAttribute("data-target");
+
+    const formData = new FormData();
+    formData.append('action', 'delete_announcement');
+    formData.append('announcement_id', data_target);
+
+    try {
+        const response = await fetch('admin_dashboard.php', {
+            method: 'POST',
+            body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.status === 'success') {
+            alert(data.message);
+
+        } else {
+            alert(data.message);
+        }
+        show_confirm_modal()
+    } catch (e) {
+        alert('An error occurred. Please try again.');
+        console.log(e)
+        show_confirm_modal()
+    }
+}
+
+// $(document).ready(function () {
+
+//     // // Delete announcement
+//     $(document).on('click', '.delete-announcement-btn', function () {
+//         var id = $(this).data('id');
+    
+//         $('#confirm-message').text('Are you sure you want to delete this announcement? This action cannot be undone.');
+//         $('#confirm-action').data('action', 'delete_announcement');
+//         $('#confirm-action').data('id', id);
+//         $('#confirm-modal').show();
+//     });
+// })
+
 
 // $('#create-class-form').on('submit', function (e) {
 //     e.preventDefault();

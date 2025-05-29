@@ -66,7 +66,6 @@ try {
             is_global TINYINT(1) DEFAULT 0,
             created_by INT NOT NULL,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            FOREIGN KEY (class_id) REFERENCES classes(id),
             FOREIGN KEY (created_by) REFERENCES admins(id)
         )",
 
