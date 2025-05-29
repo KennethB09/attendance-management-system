@@ -35,6 +35,14 @@ $result = $stmt->get_result();
 $admin = $result->fetch_assoc();
 $stmt->close();
 
+// Fetch all students for the Student Management tab
+$students_query = "SELECT * FROM students ORDER BY name ASC";
+$students_result = mysqli_query($conn, $students_query);
+$all_students = [];
+while ($row = mysqli_fetch_assoc($students_result)) {
+    $all_students[] = $row;
+}
+
 // Function to sanitize input data
 function sanitize($data)
 {
@@ -922,7 +930,58 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
 
                     <h3 class="section-title">All Students</h3>
                     <div id="students-container">
-                        <div class="loading">Loading students...</div>
+                        <?php if (count($all_students) > 0): ?>
+                            <table class="students-table">
+                                <thead>
+                                    <tr>
+                                        <th>Student ID</th>
+                                        <th>Name</th>
+                                        <th>Email</th>
+                                        <th>Section</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($all_students as $student): ?>
+                                        <tr>
+                                            <td><?php echo htmlspecialchars($student['student_id']); ?></td>
+                                            <td><?php echo htmlspecialchars($student['name']); ?></td>
+                                            <td><?php echo htmlspecialchars($student['email']); ?></td>
+                                            <td>
+                                                <?php 
+                                                // Fetch section name if you have sections table
+                                                if (!empty($student['section_id'])) {
+                                                    $section_query = "SELECT section_name FROM sections WHERE id = ?";
+                                                    $section_stmt = mysqli_prepare($conn, $section_query);
+                                                    mysqli_stmt_bind_param($section_stmt, "i", $student['section_id']);
+                                                    mysqli_stmt_execute($section_stmt);
+                                                    $section_result = mysqli_stmt_get_result($section_stmt);
+                                                    $section = mysqli_fetch_assoc($section_result);
+                                                    echo htmlspecialchars($section['section_name'] ?? 'N/A');
+                                                } else {
+                                                    echo 'N/A';
+                                                }
+                                                ?>
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-info view-student-btn" data-student-id="<?php echo $student['student_id']; ?>">
+                                                    <i class="fas fa-eye"></i> View
+                                                </button>
+                                                <button class="btn btn-warning edit-student-btn" data-student-id="<?php echo $student['student_id']; ?>">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </button>
+                                                <button class="btn btn-danger delete-student-btn" data-student-id="<?php echo $student['student_id']; ?>">
+                                                    <i class="fas fa-trash"></i> Delete
+                                                </button>
+
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        <?php else: ?>
+                            <div class="no-records">No students found in the system.</div>
+                        <?php endif; ?>
                     </div>
                 </div>
 
