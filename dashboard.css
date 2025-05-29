@@ -1,789 +1,789 @@
- body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-image: url('124155623.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url('124155623.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 
-    .header {
-        background-color: rgba(67, 97, 238, 0.8);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        color: white;
-        padding: 1rem 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
+.header {
+    background-color: rgba(67, 97, 238, 0.8);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
 
-    .header h1 {
-        margin: 0;
-        font-size: 1.5rem;
-    }
+.header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
 
-    .user-info {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
 
-    .user-info img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        background-color: #fff;
-        cursor: pointer;
-        transition: transform 0.3s ease;
-    }
+.user-info img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: #fff;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
 
-    .user-info img:hover {
-        transform: scale(1.1);
-        box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-    }
+.user-info img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
 
-    .user-info .name {
-        font-weight: 500;
-    }
+.user-info .name {
+    font-weight: 500;
+}
 
-    .user-info .logout {
-        color: white;
-        text-decoration: none;
-        background-color: rgba(255, 255, 255, 0.2);
-        padding: 0.3rem 0.8rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        transition: all 0.3s ease;
-    }
+.user-info .logout {
+    color: white;
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.3rem 0.8rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+}
 
-    .user-info .logout:hover {
-        background-color: rgba(255, 255, 255, 0.3);
-    }
+.user-info .logout:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
 
+.container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 2rem;
+}
+
+/* Fixed QR Code Sidebar */
+.sidebar {
+    position: sticky;
+    top: 2rem;
+    height: fit-content;
+}
+
+.qr-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1.5rem;
+    text-align: center;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.qr-container h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+#qrcode {
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+.qr-description {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.student-info {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.student-info h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.student-info p {
+    margin: 0.5rem 0;
+}
+
+.gpa-indicator {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+    margin: 1rem 0;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+}
+
+.welcome-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.welcome-card h2 {
+    margin-top: 0;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.welcome-card p {
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 0;
+}
+
+.success-message {
+    background-color: rgba(16, 185, 129, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.error-message {
+    background-color: rgba(239, 68, 68, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    color: white;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    text-align: center;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.attendance-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: white;
+    margin-bottom: 1.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    padding-bottom: 0.5rem;
+}
+
+.attendance-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.attendance-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.attendance-table th,
+.attendance-table td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.attendance-table th {
+    background-color: rgba(67, 97, 238, 0.2);
+    font-weight: 600;
+}
+
+.attendance-table tr:last-child td {
+    border-bottom: none;
+}
+
+.attendance-status {
+    display: inline-block;
+    padding: 0.3rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-present {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-absent {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.status-late {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.no-records {
+    text-align: center;
+    padding: 2rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+}
+
+.view-all-btn {
+    display: inline-block;
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(67, 97, 238, 0.2);
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(67, 97, 238, 0.3);
+    text-align: center;
+}
+
+.view-all-btn:hover {
+    background-color: rgba(67, 97, 238, 0.3);
+}
+
+/* Dashboard Cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.card h3 {
+    margin-top: 0;
+    color: white;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+    background-color: rgba(67, 97, 238, 0.2);
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.card-content {
+    display: none;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+}
+
+.card.active .card-content {
+    display: block;
+}
+
+.notification-badge {
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+    margin-left: 0.5rem;
+}
+
+/* Tab Content */
+.tab-content {
+    display: none;
+    margin-top: 2rem;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    box-sizing: border-box;
+}
+
+.form-control::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.btn {
+    padding: 0.7rem 1.5rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    background-color: rgba(67, 97, 238, 0.8);
+    color: white;
+}
+
+.btn:hover {
+    background-color: rgba(67, 97, 238, 1);
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+/* Course List */
+.course-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.course-name {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.course-code {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.course-details {
+    display: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.course-card.expanded .course-details {
+    display: block;
+}
+
+.course-description {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.course-instructor {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+/* Notifications */
+.notification-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.notification-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.notification-item.unread {
+    border-left: 4px solid rgba(67, 97, 238, 0.8);
+}
+
+.notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.notification-title {
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.notification-date {
+    font-size: 0.8rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.notification-sender {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+}
+
+.notification-message {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.reply-form {
+    display: none;
+    margin-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+}
+
+.notification-item.replying .reply-form {
+    display: block;
+}
+
+.reply-button {
+    background-color: rgba(67, 97, 238, 0.3);
+    color: white;
+    border: 1px solid rgba(67, 97, 238, 0.5);
+    padding: 0.4rem 0.8rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.reply-button:hover {
+    background-color: rgba(67, 97, 238, 0.4);
+}
+
+.reply-textarea {
+    width: 100%;
+    padding: 0.7rem;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
+    color: white;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+    margin-bottom: 1rem;
+}
+
+/* Student Status (Grades) */
+.grades-overview {
+    margin-bottom: 2rem;
+}
+
+.grades-summary {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.grade-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    padding: 1.2rem;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.grade-value {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.grade-label {
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.course-grades {
+    margin-top: 2rem;
+}
+
+.grade-course-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.grade-course-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    cursor: pointer;
+}
+
+.grade-course-title {
+    font-weight: 600;
+}
+
+.grade-course-percentage {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.grade-course-letter {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 50%;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 0.5rem;
+}
+
+.grade-a {
+    background-color: rgba(16, 185, 129, 0.2);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.grade-b {
+    background-color: rgba(59, 130, 246, 0.2);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.grade-c {
+    background-color: rgba(245, 158, 11, 0.2);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.grade-d {
+    background-color: rgba(249, 115, 22, 0.2);
+    color: #f97316;
+    border: 1px solid rgba(249, 115, 22, 0.3);
+}
+
+.grade-f {
+    background-color: rgba(239, 68, 68, 0.2);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.grade-assessments {
+    display: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-top: 1rem;
+    margin-top: 1rem;
+}
+
+.grade-course-card.expanded .grade-assessments {
+    display: block;
+}
+
+.assessment-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.assessment-item:last-child {
+    border-bottom: none;
+}
+
+.assessment-type {
+    font-weight: 500;
+}
+
+.assessment-date {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.assessment-score {
+    font-weight: 500;
+}
+
+/* Profile Modal */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow: auto;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    margin: 10% auto;
+    padding: 2rem;
+    border-radius: 12px;
+    max-width: 500px;
+    color: white;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    position: relative;
+}
+
+.close {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.upload-form {
+    margin-top: 1rem;
+}
+
+.upload-preview {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.preview-image {
+    max-width: 150px;
+    max-height: 150px;
+    border-radius: 50%;
+    display: none;
+    margin: 0 auto;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
     .container {
-        max-width: 1200px;
-        margin: 2rem auto;
-        padding: 0 1rem;
-        display: grid;
-        grid-template-columns: 250px 1fr;
-        gap: 2rem;
+        grid-template-columns: 1fr;
     }
 
-    /* Fixed QR Code Sidebar */
     .sidebar {
-        position: sticky;
-        top: 2rem;
-        height: fit-content;
+        position: static;
     }
 
-    .qr-container {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 1.5rem;
-        text-align: center;
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .qr-container h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    #qrcode {
-        background: white;
-        padding: 1rem;
-        border-radius: 8px;
-        margin: 0 auto;
-        width: fit-content;
-    }
-
-    .qr-description {
-        margin-top: 1rem;
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .student-info {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .student-info h3 {
-        margin-top: 0;
-        margin-bottom: 1rem;
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    .student-info p {
-        margin: 0.5rem 0;
-    }
-
-    .gpa-indicator {
-        font-size: 2rem;
-        font-weight: bold;
-        text-align: center;
-        margin: 1rem 0;
-    }
-
-    /* Main Content */
-    .main-content {
-        flex: 1;
-    }
-
-    .welcome-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 2rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        margin-bottom: 2rem;
-        color: white;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .welcome-card h2 {
-        margin-top: 0;
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    .welcome-card p {
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 0;
-    }
-
-    .success-message {
-        background-color: rgba(16, 185, 129, 0.2);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        text-align: center;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .error-message {
-        background-color: rgba(239, 68, 68, 0.2);
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-        color: white;
-        padding: 1rem;
-        border-radius: 8px;
-        margin-bottom: 1rem;
-        text-align: center;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .attendance-section {
-        margin-bottom: 2rem;
-    }
-
-    .section-title {
-        color: white;
-        margin-bottom: 1.5rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-        padding-bottom: 0.5rem;
-    }
-
-    .attendance-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .stat-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 8px;
-        padding: 1.2rem;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .stat-value {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .stat-label {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    .attendance-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 1rem;
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        overflow: hidden;
-    }
-
-    .attendance-table th,
-    .attendance-table td {
-        padding: 1rem;
-        text-align: left;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .attendance-table th {
-        background-color: rgba(67, 97, 238, 0.2);
-        font-weight: 600;
-    }
-
-    .attendance-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .attendance-status {
-        display: inline-block;
-        padding: 0.3rem 0.7rem;
-        border-radius: 4px;
-        font-size: 0.8rem;
-        font-weight: 500;
-    }
-
-    .status-present {
-        background-color: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .status-absent {
-        background-color: rgba(239, 68, 68, 0.2);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .status-late {
-        background-color: rgba(245, 158, 11, 0.2);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .no-records {
-        text-align: center;
-        padding: 2rem;
-        color: rgba(255, 255, 255, 0.7);
-        font-style: italic;
-    }
-
-    .view-all-btn {
-        display: inline-block;
-        margin-top: 1rem;
-        padding: 0.5rem 1rem;
-        background-color: rgba(67, 97, 238, 0.2);
-        color: white;
-        text-decoration: none;
-        border-radius: 6px;
-        transition: all 0.3s ease;
-        border: 1px solid rgba(67, 97, 238, 0.3);
-        text-align: center;
-    }
-
-    .view-all-btn:hover {
-        background-color: rgba(67, 97, 238, 0.3);
-    }
-
-    /* Dashboard Cards */
-    .dashboard-cards {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        margin-bottom: 2rem;
-    }
-
-    .card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        color: white;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-        cursor: pointer;
-    }
-
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-    }
-
-    .card h3 {
-        margin-top: 0;
-        color: white;
-        font-size: 1.2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
-    }
-
-    .card-icon {
-        background-color: rgba(67, 97, 238, 0.2);
-        width: 36px;
-        height: 36px;
-        border-radius: 8px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: white;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-    }
-
-    .card-content {
-        display: none;
-        margin-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        padding-top: 1rem;
-    }
-
-    .card.active .card-content {
-        display: block;
-    }
-
-    .notification-badge {
-        background-color: #ef4444;
-        color: white;
-        border-radius: 50%;
-        padding: 0.2rem 0.5rem;
-        font-size: 0.8rem;
-        margin-left: 0.5rem;
-    }
-
-    /* Tab Content */
-    .tab-content {
-        display: none;
-        margin-top: 2rem;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .form-control {
-        width: 100%;
-        padding: 0.7rem;
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 6px;
-        color: white;
-        box-sizing: border-box;
-    }
-
-    .form-control::placeholder {
-        color: rgba(255, 255, 255, 0.5);
-    }
-
-    .btn {
-        padding: 0.7rem 1.5rem;
-        border-radius: 6px;
-        border: none;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-        background-color: rgba(67, 97, 238, 0.8);
-        color: white;
-    }
-
-    .btn:hover {
-        background-color: rgba(67, 97, 238, 1);
+    .form-grid {
+        grid-template-columns: 1fr;
     }
 
     .form-group.full-width {
-        grid-column: span 2;
+        grid-column: span 1;
     }
-
-    /* Course List */
-    .course-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .course-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        cursor: pointer;
-    }
-
-    .course-name {
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-
-    .course-code {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    .course-details {
-        display: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        padding-top: 1rem;
-        margin-top: 1rem;
-    }
-
-    .course-card.expanded .course-details {
-        display: block;
-    }
-
-    .course-description {
-        margin-bottom: 1rem;
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .course-instructor {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 0.5rem;
-    }
-
-    /* Notifications */
-    .notification-item {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        transition: all 0.3s ease;
-    }
-
-    .notification-item:hover {
-        background-color: rgba(255, 255, 255, 0.15);
-    }
-
-    .notification-item.unread {
-        border-left: 4px solid rgba(67, 97, 238, 0.8);
-    }
-
-    .notification-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-
-    .notification-title {
-        font-weight: 600;
-        font-size: 1.1rem;
-    }
-
-    .notification-date {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .notification-sender {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
-        margin-bottom: 0.5rem;
-    }
-
-    .notification-message {
-        margin-bottom: 1rem;
-        font-size: 0.95rem;
-        color: rgba(255, 255, 255, 0.9);
-    }
-
-    .reply-form {
-        display: none;
-        margin-top: 1rem;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        padding-top: 1rem;
-    }
-
-    .notification-item.replying .reply-form {
-        display: block;
-    }
-
-    .reply-button {
-        background-color: rgba(67, 97, 238, 0.3);
-        color: white;
-        border: 1px solid rgba(67, 97, 238, 0.5);
-        padding: 0.4rem 0.8rem;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: all 0.3s ease;
-    }
-
-    .reply-button:hover {
-        background-color: rgba(67, 97, 238, 0.4);
-    }
-
-    .reply-textarea {
-        width: 100%;
-        padding: 0.7rem;
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 6px;
-        color: white;
-        box-sizing: border-box;
-        resize: vertical;
-        min-height: 100px;
-        margin-bottom: 1rem;
-    }
-
-    /* Student Status (Grades) */
-    .grades-overview {
-        margin-bottom: 2rem;
-    }
-
-    .grades-summary {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        margin-bottom: 1.5rem;
-    }
-
-    .grade-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 8px;
-        padding: 1.2rem;
-        text-align: center;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .grade-value {
-        font-size: 2rem;
-        font-weight: bold;
-        margin-bottom: 0.5rem;
-    }
-
-    .grade-label {
-        font-size: 0.9rem;
-        color: rgba(255, 255, 255, 0.8);
-    }
-
-    .course-grades {
-        margin-top: 2rem;
-    }
-
-    .grade-course-card {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-bottom: 1rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .grade-course-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 1rem;
-        cursor: pointer;
-    }
-
-    .grade-course-title {
-        font-weight: 600;
-    }
-
-    .grade-course-percentage {
-        font-weight: 500;
-        font-size: 1.1rem;
-    }
-
-    .grade-course-letter {
-        display: inline-block;
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
-        border-radius: 50%;
-        text-align: center;
-        font-weight: bold;
-        margin-left: 0.5rem;
-    }
-
-    .grade-a {
-        background-color: rgba(16, 185, 129, 0.2);
-        color: #10b981;
-        border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-
-    .grade-b {
-        background-color: rgba(59, 130, 246, 0.2);
-        color: #3b82f6;
-        border: 1px solid rgba(59, 130, 246, 0.3);
-    }
-
-    .grade-c {
-        background-color: rgba(245, 158, 11, 0.2);
-        color: #f59e0b;
-        border: 1px solid rgba(245, 158, 11, 0.3);
-    }
-
-    .grade-d {
-        background-color: rgba(249, 115, 22, 0.2);
-        color: #f97316;
-        border: 1px solid rgba(249, 115, 22, 0.3);
-    }
-
-    .grade-f {
-        background-color: rgba(239, 68, 68, 0.2);
-        color: #ef4444;
-        border: 1px solid rgba(239, 68, 68, 0.3);
-    }
-
-    .grade-assessments {
-        display: none;
-        border-top: 1px solid rgba(255, 255, 255, 0.2);
-        padding-top: 1rem;
-        margin-top: 1rem;
-    }
-
-    .grade-course-card.expanded .grade-assessments {
-        display: block;
-    }
-
-    .assessment-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 0.7rem 0;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .assessment-item:last-child {
-        border-bottom: none;
-    }
-
-    .assessment-type {
-        font-weight: 500;
-    }
-
-    .assessment-date {
-        font-size: 0.85rem;
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .assessment-score {
-        font-weight: 500;
-    }
-
-    /* Profile Modal */
-    .modal {
-        display: none;
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        overflow: auto;
-        backdrop-filter: blur(5px);
-        -webkit-backdrop-filter: blur(5px);
-    }
-
-    .modal-content {
-        background-color: rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        margin: 10% auto;
-        padding: 2rem;
-        border-radius: 12px;
-        max-width: 500px;
-        color: white;
-        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-    }
-
-    .close {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        color: white;
-        font-size: 28px;
-        font-weight: bold;
-        cursor: pointer;
-    }
-
-    .close:hover {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .upload-form {
-        margin-top: 1rem;
-    }
-
-    .upload-preview {
-        margin-top: 1rem;
-        text-align: center;
-    }
-
-    .preview-image {
-        max-width: 150px;
-        max-height: 150px;
-        border-radius: 50%;
-        display: none;
-        margin: 0 auto;
-        border: 3px solid rgba(255, 255, 255, 0.3);
-    }
-
-    /* Responsive adjustments */
-    @media (max-width: 768px) {
-        .container {
-            grid-template-columns: 1fr;
-        }
-
-        .sidebar {
-            position: static;
-        }
-
-        .form-grid {
-            grid-template-columns: 1fr;
-        }
-
-        .form-group.full-width {
-            grid-column: span 1;
-        }
-    }
+}
 
 
 /* Student Schedule Stylesheet */
@@ -888,7 +888,8 @@ body {
 
 .schedule-body {
     position: relative;
-    height: 960px; /* 16 hours * 60px per hour */
+    height: 960px;
+    /* 16 hours * 60px per hour */
     overflow-y: auto;
 }
 
@@ -919,23 +920,28 @@ body {
 }
 
 .schedule-item.lecture {
-    background-color: #4ade80; /* Green */
+    background-color: #4ade80;
+    /* Green */
 }
 
 .schedule-item.lab {
-    background-color: #60a5fa; /* Blue */
+    background-color: #60a5fa;
+    /* Blue */
 }
 
 .schedule-item.exam {
-    background-color: #f97316; /* Orange */
+    background-color: #f97316;
+    /* Orange */
 }
 
 .schedule-item.other {
-    background-color: #a78bfa; /* Purple */
+    background-color: #a78bfa;
+    /* Purple */
 }
 
 .schedule-item.personal {
-    background-color: #ec4899; /* Pink */
+    background-color: #ec4899;
+    /* Pink */
 }
 
 .item-title {
@@ -1097,7 +1103,8 @@ body {
     background-color: #dc2626;
 }
 
-.success-message, .error-message {
+.success-message,
+.error-message {
     padding: 12px 15px;
     margin-bottom: 15px;
     border-radius: 4px;
@@ -1118,6 +1125,13 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
