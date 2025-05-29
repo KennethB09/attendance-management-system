@@ -23,24 +23,21 @@ if(isset($_SESSION['admin_id'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     try {
-        $admin_id = $_POST['admin_id'];
+        $username = $_POST["username"];
+        //$admin_id = $_POST['admin_id'];
         $password = $_POST['password'];
 
-        $stmt = $pdo->prepare("SELECT * FROM admins WHERE id = ?");
-        $stmt->execute([$admin_id]);
+        $stmt = $pdo->prepare("SELECT * FROM admins WHERE username = ?");
+        $stmt->execute([$username]);
         $admin = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($admin && password_verify($password, $admin['password'])) {
-            // Login successful
-            $_SESSION['admin_id'] = $admin['id'];
-            $_SESSION['admin_name'] = $admin['username'];
-            
-            
             // Log the login activity
             $log_stmt = $pdo->prepare("INSERT INTO admin_logs (admin_id, action, ip_address) VALUES (?, ?, ?)");
-            $log_stmt->execute([$admin['admin_id'], 'login', $_SERVER['REMOTE_ADDR']]);
+            $log_stmt->execute([$admin['id'], 'login', $_SERVER['REMOTE_ADDR']]);
             
-            // Make sure the redirect works by using an absolute path
+            $_SESSION['admin_id'] = $admin['id'];
+            $_SESSION['admin_name'] = $admin['username'];
             $redirect_url = "http://" . $_SERVER['HTTP_HOST'] . dirname($_SERVER['PHP_SELF']) . "/admin_dashboard.php";
             header("Location: $redirect_url");
             exit();
@@ -50,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Optional: Log failed login attempts
             if ($admin) {
                 $log_stmt = $pdo->prepare("INSERT INTO admin_logs (admin_id, action, ip_address) VALUES (?, ?, ?)");
-                $log_stmt->execute([$admin_id, 'failed_login', $_SERVER['REMOTE_ADDR']]);
+                $log_stmt->execute([$admin['id'], 'failed_login', $_SERVER['REMOTE_ADDR']]);
             }
         }
     } catch(PDOException $e) {
@@ -279,9 +276,9 @@ try {
                 <label>Admin ID</label>
                 <input 
                     type="text" 
-                    name="admin_id" 
+                    name="username" 
                     required 
-                    placeholder="Enter your admin ID"
+                    placeholder="Enter your admin name"
                     autocomplete="off"
 
             </div>

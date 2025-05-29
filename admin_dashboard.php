@@ -442,7 +442,7 @@ $active_tab = isset($_GET['tab']) ? $_GET['tab'] : 'dashboard';
         <div class="user-info">
             <div class="name"><?php echo isset($admin['name']) ? htmlspecialchars($admin['name']) : 'Admin'; ?></div>
             <img src="<?php echo !empty($admin['profile_image']) ? 'uploads/' . $admin['profile_image'] : 'uploads/profile_pictures/69_1747031134.jpg'; ?>" alt="Profile" id="profileImage">
-            <a href="admin_login.php" class="logout">Logout</a>
+            <a href="admin_logout.php" class="logout">Logout</a>
         </div>
     </div>
 

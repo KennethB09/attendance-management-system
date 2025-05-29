@@ -8,13 +8,13 @@ $password = '';
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
+
     // First, check if the admins table exists and get its structure
     $tableExists = false;
     try {
         $stmt = $pdo->query("SHOW TABLES LIKE 'admins'");
         $tableExists = ($stmt->rowCount() > 0);
-    } catch(PDOException $e) {
+    } catch (PDOException $e) {
         // Table doesn't exist
     }
 
@@ -22,7 +22,6 @@ try {
         // Create admins table if it doesn't exist
         $pdo->exec("CREATE TABLE IF NOT EXISTS admins (
             id INT PRIMARY KEY AUTO_INCREMENT,
-            admin_id VARCHAR(20) UNIQUE NOT NULL,
             name VARCHAR(100) NOT NULL,
             email VARCHAR(100) UNIQUE NOT NULL,
             password VARCHAR(255) NOT NULL,
@@ -30,8 +29,7 @@ try {
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )");
     }
-
-} catch(PDOException $e) {
+} catch (PDOException $e) {
     die("Connection failed: " . $e->getMessage());
 }
 
@@ -40,54 +38,54 @@ $error_message = '';
 $success_message = '';
 
 // Redirect if already logged in
-if(isset($_SESSION['admin_id'])) {
+if (isset($_SESSION['admin_id'])) {
     header("Location: admin_dashboard.php");
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_id = trim($_POST['admin_id']);
+    //$admin_id = trim($_POST['admin_id']);
     $name = trim($_POST['name']);
     $email = trim($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
-    
+
     // Validation
-    if (empty($admin_id) || empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
+    if (empty($name) || empty($email) || empty($password) || empty($confirm_password)) {
         $error_message = "All fields are required";
     } elseif ($password !== $confirm_password) {
         $error_message = "Passwords do not match";
     } else {
         try {
             // Check if admin ID already exists
-            $check_stmt = $pdo->prepare("SELECT admin_id FROM admins WHERE admin_id = ?");
-            $check_stmt->execute([$admin_id]);
-            
+            $check_stmt = $pdo->prepare("SELECT username FROM admins WHERE username = ?");
+            $check_stmt->execute([$name]);
+
             if ($check_stmt->rowCount() > 0) {
-                $error_message = "Admin ID already exists";
+                $error_message = "Admin name already exists";
             } else {
                 // Check if email already exists
                 $check_email = $pdo->prepare("SELECT email FROM admins WHERE email = ?");
                 $check_email->execute([$email]);
-                
+
                 if ($check_email->rowCount() > 0) {
                     $error_message = "Email already registered";
                 } else {
                     // Hash password
                     $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                    
+
                     // Insert new admin
-                    $stmt = $pdo->prepare("INSERT INTO admins (admin_id, name, email, password) VALUES (?, ?, ?, ?)");
-                    
-                    if ($stmt->execute([$admin_id, $name, $email, $hashed_password])) {
+                    $stmt = $pdo->prepare("INSERT INTO admins (name, email, password) VALUES (?, ?, ?)");
+
+                    if ($stmt->execute([$name, $email, $hashed_password])) {
                         $success_message = "Registration successful! Please login.";
-                        
+
                         // Redirect to login after short delay
                         header("refresh:2;url=admin_login.php");
                     }
                 }
             }
-        } catch(PDOException $e) {
+        } catch (PDOException $e) {
             $error_message = "Registration failed: " . $e->getMessage();
         }
     }
@@ -95,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -105,7 +104,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             margin: 0;
             padding: 0;
             min-height: 100vh;
-            background-image: url('124155623.jpg'); /* Replace with your background image */
+            background-image: url('124155623.jpg');
+            /* Replace with your background image */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -240,53 +240,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <h2>Admin Registration</h2>
-        
-        <?php if($error_message): ?>
+
+        <?php if ($error_message): ?>
             <div class="error-message"><?php echo htmlspecialchars($error_message); ?></div>
         <?php endif; ?>
 
-        <?php if($success_message): ?>
+        <?php if ($success_message): ?>
             <div class="success-message"><?php echo htmlspecialchars($success_message); ?></div>
         <?php endif; ?>
 
         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-            <div class="form-group">
-                <label>Admin ID</label>
-                <input type="text" name="admin_id" required placeholder="Enter your admin ID"
-                       value="<?php echo isset($_POST['admin_id']) ? htmlspecialchars($_POST['admin_id']) : ''; ?>">
-            </div>
-            
+
             <div class="form-group">
                 <label>Name</label>
                 <input type="text" name="name" required placeholder="Enter your full name"
-                       value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
+                    value="<?php echo isset($_POST['name']) ? htmlspecialchars($_POST['name']) : ''; ?>">
             </div>
-            
+
             <div class="form-group">
                 <label>Email</label>
                 <input type="email" name="email" required placeholder="Enter your email address"
-                       value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                    value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
             </div>
-            
+
             <div class="form-group">
                 <label>Password</label>
                 <input type="password" name="password" required placeholder="Choose a strong password">
             </div>
-            
+
             <div class="form-group">
                 <label>Confirm Password</label>
                 <input type="password" name="confirm_password" required placeholder="Confirm your password">
             </div>
-            
+
             <button type="submit">Register as Admin</button>
         </form>
-        
+
         <div class="login-link">
             Already have an account? <a href="admin_login.php">Login here</a>
         </div>
     </div>
 </body>
+
 </html>
